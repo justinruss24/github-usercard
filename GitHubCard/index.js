@@ -3,6 +3,8 @@
            https://api.github.com/users/<your name>
 */
 
+
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -10,9 +12,6 @@
    Skip to Step 3.
 */
 
-/* Step 4: Pass the data received from Github into your function, 
-           create a new component and add it to the DOM as a child of .cards
-*/
 
 /* Step 5: Now that you have your own card getting added to the DOM, either 
           follow this link in your browser https://api.github.com/users/<Your github name>/followers 
@@ -45,6 +44,67 @@ const followersArray = [];
 </div>
 
 */
+function gitBio (obj){
+//creating all elements
+  const card = document.createElement('div'),
+        photo = document.createElement('img'),
+        cardInfo = document.createElement('div'),
+        name = document.createElement('h3'),
+        username = document.createElement('p'),
+        location = document.createElement('p'),
+        profile = document.createElement('p'),
+        profileLink = document.createElement('a');
+        followers = document.createElement('p'),
+        following = document.createElement('p'),
+        bio = document.createElement('p');
+  
+//adding content to the elements
+  photo.src = obj.avatar_url;
+  name.textContent = obj.name;
+  username.textContent = obj.login;
+  location.tetContent = `Location: ${obj.location}`;
+  profile.textContent = `Profile: `
+  profileLink.textContent = obj.url;
+  followers.textContent = `Followers: ${obj.followers}`;
+  following.textContent = `Following: ${obj.following}`;
+  bio.textContent = `Bio: ${obj.bio}`;
+
+//adding classes to elements
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  name.classList.add('name');
+  username.classList.add('username');
+
+//append elements to parents
+  card.append(photo);
+  card.append(cardInfo);
+  cardInfo.append(name);
+  cardInfo.append(username);
+  cardInfo.append(location);
+  cardInfo.append(profile);
+  cardInfo.append(followers);
+  cardInfo.append(following);
+  cardInfo.append(bio);
+  profile.append(profileLink);
+
+  return card;
+}
+
+/* Step 4: Pass the data received from Github into your function,
+           create a new component and add it to the DOM as a child of .cards
+*/
+
+const entryPoint = document.querySelector('.cards');
+
+axios.get("https://api.github.com/users/justinruss24")
+  .then(response => {
+    console.log(response.data);
+    entryPoint.append(gitBio(response.data));
+  })
+  .catch(error => {
+    console.log("the data was not returned", error);
+  })
+
 
 /* List of LS Instructors Github username's: 
   tetondan
